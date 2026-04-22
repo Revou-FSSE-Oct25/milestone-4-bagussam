@@ -24,4 +24,25 @@ export class AccountsService {
     if (!account) throw new NotFoundException('Account not found');
     return account;
   }
+
+  // Update a bank account
+  async update(id: string, userId: string, data: { accountNumber?: string }) {
+    const account = await this.findOne(id, userId); // Ensure ownership
+    if (!account) throw new NotFoundException('Account not found');
+
+    return this.prisma.account.update({
+      where: { id },
+      data,
+    });
+  }
+
+  // Delete a bank account
+  async remove(id: string, userId: string) {
+    const account = await this.findOne(id, userId); // Ensure ownership
+    if (!account) throw new NotFoundException('Account not found');
+
+    return this.prisma.account.delete({
+      where: { id },
+    });
+  }
 }

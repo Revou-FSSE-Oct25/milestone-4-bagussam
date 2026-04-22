@@ -8,12 +8,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET,
+      // Menggunakan fallback string agar TypeScript tidak menganggapnya undefined
+      secretOrKey: process.env.JWT_SECRET || 'revobank-super-secret-key-2026-production',
     });
   }
 
   async validate(payload: any) {
-    // This payload is attached to the request object as `req.user`
-    return { id: payload.sub, role: payload.role }; 
+    return { id: payload.sub, role: payload.role };
   }
 }
